@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg class="icon-huella" viewBox="0 0 24 24">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>Encontrando Huellitas</span>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="reporte-perdida.html">Reportar Pérdida</a>
+            <a href="reporte-hallazgo.html">Reportar Hallazgo</a>
+            <a href="coincidencias.html">Coincidencias</a>
+            <a href="mensajes.html">Mensajes</a>
+            <a href="perfil.html" class="active">Mi Perfil</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <h2>
+            <svg class="icon-huella" viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff;">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            Panel de Usuario y Mis Reportes
+        </h2>
+    </div>
+
+    <main style="max-width: 900px; margin: 2rem auto; padding: 1rem;">
+        <div class="panel-busqueda" style="margin-bottom: 2rem;">
+            <h3 style="color: var(--color-principal); margin-bottom: 0.5rem;" id="nombrePerfil">Cargando datos...</h3>
+            <p id="correoPerfil" style="margin: 0.2rem 0; color: #555;"></p>
+            <p id="telefonoPerfil" style="margin: 0.2rem 0; color: #555;"></p>
+        </div>
+
+        <h3 style="color: var(--color-principal); border-bottom: 2px solid var(--color-principal); padding-bottom: 0.5rem;">
+            Mis Publicaciones de Mascotas
+        </h3>
+
+        <div class="grid-reportes" id="contenedorMisReportes" style="margin-top: 1rem;">
+            <!-- Reportes del usuario cargados por JS -->
+        </div>
+    </main>
+
+    <script src="js/perfil.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

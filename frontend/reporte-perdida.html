@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportar Mascotas Perdida - Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Encontrando Huellitas</div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="coincidencias.html">Coincidencias</a>
+        </nav>
+    </header>
+
+    <div class="panel-busqueda" style="max-width: 600px; margin-top: 2rem;">
+        <h2 style="text-align: center; color: var(--color-principal);">Reportar Mascota Perdida</h2>
+        <form id="formPerdida" enctype="multipart/form-data">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Especie</label>
+                <select id="especie" required onchange="actualizarRazas()">
+                    <option value="">Seleccione una especie</option>
+                    <option value="PERRO">Perro</option>
+                    <option value="GATO">Gato</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Raza</label>
+                <select id="raza_select" required onchange="evaluarRazaOtro()">
+                    <option value="">Primero seleccione una especie</option>
+                </select>
+            </div>
+            <div class="form-group" id="grupo_raza_otro" style="margin-bottom: 1rem; display: none;">
+                <label>Escriba la Raza</label>
+                <input type="text" id="raza_otro_input" placeholder="Ej. Criollo especial">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Color Principal</label>
+                <select id="color_principal" required>
+                    <option value="">Seleccione el color principal</option>
+                    <option value="Negro">Negro</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Café / Marrón">Café / Marrón</option>
+                    <option value="Dorado / Amarillo">Dorado / Amarillo</option>
+                    <option value="Gris / Plateado">Gris / Plateado</option>
+                    <option value="Crema / Beis">Crema / Beis</option>
+                    <option value="Naranja / Anaranjado">Naranja / Anaranjado</option>
+                    <option value="Atigrado">Atigrado</option>
+                    <option value="Manchado / Pío">Manchado / Pío</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Color Secundario</label>
+                <select id="color_secundario" required>
+                    <option value="NO_APLICA">No aplica (Mascota de un solo color)</option>
+                    <option value="Negro">Negro</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Café / Marrón">Café / Marrón</option>
+                    <option value="Dorado / Amarillo">Dorado / Amarillo</option>
+                    <option value="Gris / Plateado">Gris / Plateado</option>
+                    <option value="Crema / Beis">Crema / Beis</option>
+                    <option value="Naranja / Anaranjado">Naranja / Anaranjado</option>
+                    <option value="Atigrado">Atigrado</option>
+                    <option value="Manchado / Pío">Manchado / Pío</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Tamaño</label>
+                <select id="tamano" required>
+                    <option value="PEQUENO">Pequeño</option>
+                    <option value="MEDIANO">Mediano</option>
+                    <option value="GRANDE">Grande</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Zona / Localidad de Bogotá</label>
+                <select id="zona" required>
+                    <option value="">Seleccione la localidad</option>
+                    <option value="Usaquén">Usaquén</option>
+                    <option value="Chapinero">Chapinero</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="San Cristóbal">San Cristóbal</option>
+                    <option value="Usme">Usme</option>
+                    <option value="Tunjuelito">Tunjuelito</option>
+                    <option value="Bosa">Bosa</option>
+                    <option value="Kennedy">Kennedy</option>
+                    <option value="Fontibón">Fontibón</option>
+                    <option value="Engativá">Engativá</option>
+                    <option value="Suba">Suba</option>
+                    <option value="Barrios Unidos">Barrios Unidos</option>
+                    <option value="Teusaquillo">Teusaquillo</option>
+                    <option value="Los Mártires">Los Mártires</option>
+                    <option value="Antonio Nariño">Antonio Nariño</option>
+                    <option value="Puente Aranda">Puente Aranda</option>
+                    <option value="La Candelaria">La Candelaria</option>
+                    <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
+                    <option value="Ciudad Bolívar">Ciudad Bolívar</option>
+                    <option value="Sumapaz">Sumapaz</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Fecha de Pérdida</label>
+                <input type="date" id="fecha_perdida" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Recompensa (Opcional)</label>
+                <input type="number" id="recompensa" placeholder="0.00">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Descripción detallada</label>
+                <textarea id="descripcion" rows="3"></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Fotografía</label>
+                <input type="file" id="imagen" accept="image/*" required>
+            </div>
+            <button type="submit" class="btn-buscar">Guardar Reporte</button>
+        </form>
+    </div>
+
+    <script src="js/reportes.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

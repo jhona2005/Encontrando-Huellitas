@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg class="icon-huella" viewBox="0 0 24 24">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>Encontrando Huellitas</span>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="login.html">Iniciar Sesión</a>
+        </nav>
+    </header>
+
+    <div class="panel-busqueda" style="max-width: 500px; margin-top: 2rem;">
+        <svg class="huella-bg" viewBox="0 0 24 24">
+            <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+
+        <div style="text-align: center; color: var(--color-principal); margin-bottom: 1rem;">
+            <svg class="icon-huella" viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: var(--color-principal);">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <h2>Crear Cuenta</h2>
+        </div>
+
+        <form id="formSignup">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Nombre Completo</label>
+                <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Correo Electrónico</label>
+                <input type="email" id="correo" required placeholder="correo@ejemplo.com">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Teléfono</label>
+                <input type="number" id="telefono" required placeholder="3001234567">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Dirección</label>
+                <input type="text" id="direccion" placeholder="Calle 123 #45-67">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Tipo de Usuario</label>
+                <select id="tipo_usuario">
+                    <option value="PARTICULAR">Particular</option>
+                    <option value="ENTIDAD">Entidad / Fundación</option>
+                </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Contraseña</label>
+                <input type="password" id="contrasena" required placeholder="********">
+            </div>
+            <button type="submit" class="btn-buscar">
+                Registrarse
+            </button>
+        </form>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

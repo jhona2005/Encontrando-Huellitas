@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg class="icon-huella" viewBox="0 0 24 24">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>Encontrando Huellitas</span>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="reporte-perdida.html">Reportar Pérdida</a>
+            <a href="reporte-hallazgo.html">Reportar Hallazgo</a>
+            <a href="coincidencias.html">Coincidencias</a>
+            <a href="login.html">Ingresar</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>¿Perdiste a tu mejor amigo? Encuéntralo aquí.</h2>
+    </section>
+
+    <div class="panel-busqueda">
+        <svg class="huella-bg" viewBox="0 0 24 24">
+            <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+
+        <form class="form-busqueda" id="formBusqueda">
+            <div class="form-group">
+                <label>Especie</label>
+                <select id="filtroEspecie" onchange="actualizarRazasFiltro()">
+                    <option value="">Todas</option>
+                    <option value="PERRO">Perro</option>
+                    <option value="GATO">Gato</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Raza</label>
+                <select id="filtroRaza">
+                    <option value="">Todas las razas</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Color Principal</label>
+                <select id="filtroColorPrincipal">
+                    <option value="">Todos los colores</option>
+                    <option value="Negro">Negro</option>
+                    <option value="Blanco">Blanco</option>
+                    <option value="Café / Marrón">Café / Marrón</option>
+                    <option value="Dorado / Amarillo">Dorado / Amarillo</option>
+                    <option value="Gris / Plateado">Gris / Plateado</option>
+                    <option value="Crema / Beis">Crema / Beis</option>
+                    <option value="Naranja / Anaranjado">Naranja / Anaranjado</option>
+                    <option value="Atigrado">Atigrado</option>
+                    <option value="Manchado / Pío">Manchado / Pío</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Zona / Localidad</label>
+                <select id="filtroZona">
+                    <option value="">Todas las localidades</option>
+                    <option value="Usaquén">Usaquén</option>
+                    <option value="Chapinero">Chapinero</option>
+                    <option value="Santa Fe">Santa Fe</option>
+                    <option value="San Cristóbal">San Cristóbal</option>
+                    <option value="Usme">Usme</option>
+                    <option value="Tunjuelito">Tunjuelito</option>
+                    <option value="Bosa">Bosa</option>
+                    <option value="Kennedy">Kennedy</option>
+                    <option value="Fontibón">Fontibón</option>
+                    <option value="Engativá">Engativá</option>
+                    <option value="Suba">Suba</option>
+                    <option value="Barrios Unidos">Barrios Unidos</option>
+                    <option value="Teusaquillo">Teusaquillo</option>
+                    <option value="Los Mártires">Los Mártires</option>
+                    <option value="Antonio Nariño">Antonio Nariño</option>
+                    <option value="Puente Aranda">Puente Aranda</option>
+                    <option value="La Candelaria">La Candelaria</option>
+                    <option value="Rafael Uribe Uribe">Rafael Uribe Uribe</option>
+                    <option value="Ciudad Bolívar">Ciudad Bolívar</option>
+                    <option value="Sumapaz">Sumapaz</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-buscar">
+                <svg class="icon-huella" viewBox="0 0 24 24">
+                    <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                BUSCAR
+            </button>
+        </form>
+    </div>
+
+    <main class="grid-reportes" id="contenedorReportes">
+        <!-- Tarjetas dinamicas cargadas mediante JS -->
+    </main>
+
+    <!-- Modal Flotante de Selección de Reporte Propio para Contactar -->
+    <div id="modalContacto" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: #fff; padding: 1.5rem; border-radius: 12px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto;">
+            <h3 style="color: var(--color-principal); margin-top: 0;" id="tituloModalContacto">¿Por qué reporte quieres generar esta coincidencia?</h3>
+            <div id="listaMisReportesModal" style="display: flex; flex-direction: column; gap: 0.8rem; margin: 1rem 0;"></div>
+            <button onclick="cerrarModalContacto()" style="background: #777; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; width: 100%;">Cancelar</button>
+        </div>
+    </div>
+
+    <script src="js/busqueda.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

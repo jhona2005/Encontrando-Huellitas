@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes - Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg class="icon-huella" viewBox="0 0 24 24">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>Encontrando Huellitas</span>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="reporte-perdida.html">Reportar Pérdida</a>
+            <a href="reporte-hallazgo.html">Reportar Hallazgo</a>
+            <a href="coincidencias.html">Coincidencias</a>
+            <a href="mensajes.html" class="active">Mensajes</a>
+            <a href="perfil.html" id="linkPerfilNav">Mi Perfil</a>
+        </nav>
+    </header>
+
+    <div class="hero" style="padding: 1.5rem 1rem;">
+        <h2>
+            <svg class="icon-huella" viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #fff;">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            Centro de Mensajes y Coincidencias
+        </h2>
+    </div>
+
+    <!-- Layout de Mensajeria (Chats a la izquierda, Conversacion a la derecha) -->
+    <div style="max-width: 1000px; margin: 2rem auto; display: flex; gap: 1.5rem; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); min-height: 500px; overflow: hidden;">
+        
+        <!-- Lista lateral de chats de coincidencias -->
+        <div style="width: 32%; border-right: 1px solid #e0e0e0; background: #f9fbfb; padding: 1rem;" id="listaChats">
+            <h3 style="color: var(--color-principal); font-size: 1.1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--color-principal); padding-bottom: 0.5rem;">
+                Coincidencias Activas
+            </h3>
+            <div id="contenedorListaCoincidencias">
+                <p style="color: #777; font-size: 0.9rem; text-align: center;">Cargando chats...</p>
+            </div>
+        </div>
+
+        <!-- Panel principal de conversacion -->
+        <div style="width: 68%; display: flex; flex-direction: column; padding: 1.5rem;" id="panelConversacion">
+            <div style="border-bottom: 1px solid #eee; padding-bottom: 0.8rem; margin-bottom: 1rem;" id="cabeceraChat">
+                <h3 style="color: var(--color-principal); margin: 0;">Selecciona un chat para comenzar</h3>
+            </div>
+
+            <!-- Area de burbujas de mensaje -->
+            <div style="flex-grow: 1; overflow-y: auto; max-height: 350px; padding: 1rem; background: #f4f8f8; border-radius: 8px; margin-bottom: 1rem;" id="areaBurbujas">
+                <p style="text-align: center; color: #888;">Selecciona una coincidencia de la izquierda para ver el historial.</p>
+            </div>
+
+            <!-- Formulario para enviar mensaje -->
+            <form id="formEnviarMensajeChat" style="display: none; gap: 0.5rem;">
+                <input type="text" id="inputTextoChat" placeholder="Escribe un mensaje..." required style="flex-grow: 1;">
+                <button type="submit" class="btn-buscar" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border-radius: 8px;">
+                    Enviar
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/mensajes.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Encontrando Huellitas</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <svg class="icon-huella" viewBox="0 0 24 24">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span>Encontrando Huellitas</span>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="signup.html">Registrarse</a>
+        </nav>
+    </header>
+
+    <div class="panel-busqueda" style="max-width: 400px; margin-top: 3rem;">
+        <svg class="huella-bg" viewBox="0 0 24 24">
+            <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+        </svg>
+
+        <div style="text-align: center; color: var(--color-principal); margin-bottom: 1rem;">
+            <svg class="icon-huella" viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: var(--color-principal);">
+                <path d="M12 11.5c-2.5 0-4.5 1.8-4.5 3.5 0 2 2 3.5 4.5 3.5s4.5-1.5 4.5-3.5c0-1.7-2-3.5-4.5-3.5zm-5.5-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm11 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm-8.5-4c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm6 0c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <h2>Iniciar Sesión</h2>
+        </div>
+
+        <form id="formLogin">
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Correo Electrónico</label>
+                <input type="email" id="correo" required placeholder="correo@ejemplo.com">
+            </div>
+            <div class="form-group" style="margin-bottom: 1rem;">
+                <label>Contraseña</label>
+                <input type="password" id="contrasena" required placeholder="********">
+            </div>
+            <button type="submit" class="btn-buscar">
+                Ingresar
+            </button>
+        </form>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
