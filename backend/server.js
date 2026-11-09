@@ -12,9 +12,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* Servir archivos estáticos del frontend (ahora ubicado dentro de /backend) */
-const frontendPath = path.join(__dirname, 'frontend');
-app.use(express.static(frontendPath));
+/* Servir archivos estáticos del frontend */
+const frontendPath = path.resolve(__dirname, 'frontend');
+app.use(express.static(frontendPath, { index: 'index.html' }));
 app.use('/uploads', express.static(path.join(frontendPath, 'uploads')));
 
 /* Importación de rutas API */
@@ -36,14 +36,13 @@ app.get('/api/health', (req, res) => {
     res.json({ estado: 'Servidor funcional', timestamp: new Date() });
 });
 
-/* Servir la interfaz gráfica index.html para la raíz */
-app.get('/', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
-});
-
-/* Captura de rutas no encontradas del frontend */
+/* Servir la interfaz gráfica para cualquier ruta no capturada por la API */
 app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendPath, 'index.html'));
+    res.sendFile(path.join(frontendPath, 'index.html'), (err) => {
+        if (err) {
+            res.status(404).send('No se pudo encontrar index.html en la carpeta frontend.');
+        }
+    });
 });
 
 /* Inicialización del servidor */
