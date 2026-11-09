@@ -1,4 +1,4 @@
-USE huellitas;
+USE railway;
 
 /* Desactivar temporalmente restricciones de clave foránea */
 SET FOREIGN_KEY_CHECKS = 0;

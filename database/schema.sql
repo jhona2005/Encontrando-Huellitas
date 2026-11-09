@@ -1,4 +1,4 @@
-USE huellitas;
+USE railway;
 
 /* 1. Eliminar tablas anteriores si existen */
 SET FOREIGN_KEY_CHECKS = 0;
@@ -28,12 +28,11 @@ CREATE TABLE usuario (
 
 CREATE TABLE entidad_reportante (
     id_entidad INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL UNIQUE,
     nombre_entidad VARCHAR(100) NOT NULL,
     tipo_entidad ENUM('FUNDACION', 'REFUGIO', 'VETERINARIA') NOT NULL,
-    direccion VARCHAR(150) NOT NULL,
-    telefono VARCHAR(20) NOT NULL,
-    correo_contacto VARCHAR(150) NOT NULL UNIQUE,
-    estado_validacion ENUM('PENDIENTE', 'ACTIVA', 'INACTIVA') NOT NULL DEFAULT 'PENDIENTE'
+    estado_validacion ENUM('PENDIENTE', 'ACTIVA', 'INACTIVA') NOT NULL DEFAULT 'PENDIENTE',
+    CONSTRAINT fk_entidad_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE reporte_mascota (
@@ -113,6 +112,7 @@ CREATE TABLE auditoria_reporte (
 
 /* 3. Triggers */
 DROP TRIGGER IF EXISTS trg_auditoria_estado_reporte;
+DELIMITER //
 CREATE TRIGGER trg_auditoria_estado_reporte
 AFTER UPDATE ON reporte_mascota
 FOR EACH ROW
@@ -121,9 +121,11 @@ BEGIN
         INSERT INTO auditoria_reporte (id_reporte, estado_anterior, estado_nuevo)
         VALUES (NEW.id_reporte, OLD.estado, NEW.estado);
     END IF;
-END;
+END //
+DELIMITER ;
 
 DROP TRIGGER IF EXISTS trg_validar_recompensa;
+DELIMITER //
 CREATE TRIGGER trg_validar_recompensa
 BEFORE INSERT ON reporte_perdida
 FOR EACH ROW
@@ -131,10 +133,12 @@ BEGIN
     IF NEW.recompensa < 0 THEN
         SET NEW.recompensa = 0.00;
     END IF;
-END;
+END //
+DELIMITER ;
 
 /* 4. Funciones */
 DROP FUNCTION IF EXISTS fn_coincidencia_zona;
+DELIMITER //
 CREATE FUNCTION fn_coincidencia_zona(zona1 VARCHAR(50), zona2 VARCHAR(50))
 RETURNS DECIMAL(3,2)
 DETERMINISTIC
@@ -144,10 +148,12 @@ BEGIN
     ELSE
         RETURN 0.00;
     END IF;
-END;
+END //
+DELIMITER ;
 
 /* 5. Stored Procedures */
 DROP PROCEDURE IF EXISTS sp_cerrar_reporte;
+DELIMITER //
 CREATE PROCEDURE sp_cerrar_reporte(
     IN p_id_reporte INT,
     IN p_nuevo_estado ENUM('ENCONTRADO', 'RESUELTO', 'CERRADO')
@@ -174,21 +180,5 @@ BEGIN
         SET estado = p_nuevo_estado 
         WHERE id_reporte = p_id_reporte;
     COMMIT;
-END;
-
-USE huellitas;
-
-/* Eliminar la tabla antigua para aplicar la nueva estructura normalizada */
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS entidad_reportante;
-SET FOREIGN_KEY_CHECKS = 1;
-
-/* Recrear Tabla Entidad_Reportante (Normalizada como especialización de Usuario) */
-CREATE TABLE entidad_reportante (
-    id_entidad INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL UNIQUE,
-    nombre_entidad VARCHAR(100) NOT NULL,
-    tipo_entidad ENUM('FUNDACION', 'REFUGIO', 'VETERINARIA') NOT NULL,
-    estado_validacion ENUM('PENDIENTE', 'ACTIVA', 'INACTIVA') NOT NULL DEFAULT 'PENDIENTE',
-    CONSTRAINT fk_entidad_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id_usuario) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+END //
+DELIMITER ;
