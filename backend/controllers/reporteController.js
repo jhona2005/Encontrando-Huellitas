@@ -20,19 +20,24 @@ exports.obtenerReportes = async (req, res) => {
         }
 
         if (raza && raza.trim() !== '' && raza !== 'Todas las razas') {
-            sql += ` AND rm.raza LIKE ?`;
-            parametros.push(`%${raza.trim()}%`);
+            const razaLimpia = raza.trim().replace(/[áàäâ]/g, 'a').replace(/[éèëê]/g, 'e').replace(/[íìïî]/g, 'i').replace(/[óòöô]/g, 'o').replace(/[úùüû]/g, 'u');
+            sql += ` AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rm.raza, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u') LIKE ?`;
+            parametros.push(`%${razaLimpia}%`);
         }
 
         if (color_principal && color_principal.trim() !== '' && color_principal !== 'Todos los colores') {
-            const colorLimpio = color_principal.split('/')[0].trim();
-            sql += ` AND (rm.color_principal LIKE ? OR rm.color_principal LIKE ?)`;
-            parametros.push(`%${colorLimpio}%`, `%${color_principal.trim()}%`);
+            const colorLimpio = color_principal.split('/')[0].trim().replace(/[áàäâ]/g, 'a').replace(/[éèëê]/g, 'e').replace(/[íìïî]/g, 'i').replace(/[óòöô]/g, 'o').replace(/[úùüû]/g, 'u');
+            sql += ` AND (
+                REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rm.color_principal, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u') LIKE ?
+                OR REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rm.color_secundario, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u') LIKE ?
+            )`;
+            parametros.push(`%${colorLimpio}%`, `%${colorLimpio}%`);
         }
 
         if (zona && zona.trim() !== '' && zona !== 'Todas las localidades') {
-            sql += ` AND rm.zona LIKE ?`;
-            parametros.push(`%${zona.trim()}%`);
+            const zonaLimpia = zona.trim().replace(/[áàäâ]/g, 'a').replace(/[éèëê]/g, 'e').replace(/[íìïî]/g, 'i').replace(/[óòöô]/g, 'o').replace(/[úùüû]/g, 'u');
+            sql += ` AND REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(rm.zona, 'á', 'a'), 'é', 'e'), 'í', 'i'), 'ó', 'o'), 'ú', 'u') LIKE ?`;
+            parametros.push(`%${zonaLimpia}%`);
         }
 
         sql += ` ORDER BY rm.fecha_reporte DESC`;
