@@ -12,8 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* Servir archivos estáticos del frontend */
-const frontendPath = path.join(__dirname, '../frontend');
+/* Servir archivos estáticos del frontend (ahora ubicado dentro de /backend) */
+const frontendPath = path.join(__dirname, 'frontend');
 app.use(express.static(frontendPath));
 app.use('/uploads', express.static(path.join(frontendPath, 'uploads')));
 
