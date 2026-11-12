@@ -96,7 +96,7 @@ exports.obtenerReportePorId = async (req, res) => {
 exports.crearReportePerdida = async (req, res) => {
     try {
         const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_perdida, recompensa, id_usuario } = req.body;
-        const url_imagen = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.jpg';
+        const url_imagen = req.file ? req.file.path : '/uploads/default.jpg';
 
         const [resMascota] = await db.execute(`
             INSERT INTO reporte_mascota (especie, raza, color_principal, color_secundario, tamano, descripcion, zona, estado, id_usuario)
@@ -121,7 +121,7 @@ exports.crearReportePerdida = async (req, res) => {
 exports.crearReporteHallazgo = async (req, res) => {
     try {
         const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_hallazgo, id_usuario } = req.body;
-        const url_imagen = req.file ? `/uploads/${req.file.filename}` : '/uploads/default.jpg';
+        const url_imagen = req.file ? req.file.path : '/uploads/default.jpg';
 
         const [resMascota] = await db.execute(`
             INSERT INTO reporte_mascota (especie, raza, color_principal, color_secundario, tamano, descripcion, zona, estado, id_usuario)
@@ -195,7 +195,7 @@ exports.actualizarReporte = async (req, res) => {
         }
 
         if (req.file) {
-            const url_imagen = `/uploads/${req.file.filename}`;
+            const url_imagen = req.file.path;
             await db.execute(`
                 INSERT INTO fotografia (url_imagen, id_reporte) VALUES (?, ?)
                 ON DUPLICATE KEY UPDATE url_imagen = VALUES(url_imagen)

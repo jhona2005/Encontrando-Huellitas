@@ -14,6 +14,8 @@ Git
 
 MySQL Server (local mediante MySQL Workbench, XAMPP/WAMP o un servidor MySQL nativo)
 
+Cuenta gratuita en Cloudinary (para almacenamiento persistente de fotografias)
+
 Pasos para Ejecutar el Proyecto en Local
 
 1. Clonar el Repositorio
@@ -26,7 +28,7 @@ cd Encontrando-Huellitas/backend
 
 2. Instalar Dependencias del Backend
 
-Dentro de la carpeta backend, ejecuta el siguiente comando para descargar las librerias necesarias (express, mysql2, dotenv, cors, multer):
+Dentro de la carpeta backend, ejecuta el siguiente comando para descargar las librerias necesarias (express, mysql2, dotenv, cors, multer, cloudinary, multer-storage-cloudinary):
 
 npm install
 
@@ -47,7 +49,7 @@ Ejecuta el archivo del esquema de la base de datos ubicado en la carpeta databas
 
 4. Configurar las Variables de Entorno (.env)
 
-Dentro de la carpeta backend/, crea un archivo llamado .env (al mismo nivel que server.js) con las credenciales de tu base de datos local:
+Dentro de la carpeta backend/, crea un archivo llamado .env (al mismo nivel que server.js) con las credenciales de tu base de datos local y tu cuenta de Cloudinary:
 
 PORT=3000
 DB_HOST=localhost
@@ -56,18 +58,16 @@ DB_PASSWORD=tu_contrasena_local
 DB_NAME=huellitas
 DB_PORT=3306
 DB_SSL=false
+CLOUDINARY_URL=cloudinary://tu_api_key:tu_api_secret@tu_cloud_name
 
 
-Nota: Reemplaza tu_contrasena_local por la clave de tu usuario root de MySQL local. Si tu usuario no tiene contrasena, dejalo en blanco (DB_PASSWORD=).
+Nota: Reemplaza tu_contrasena_local por la clave de tu usuario root de MySQL local (si no tiene contrasena, dejalo en blanco). Asi mismo, reemplaza la cadena CLOUDINARY_URL con las credenciales de tu panel de Cloudinary.
 
-5. Verificar y Ajustar las Rutas de Estaticos en server.js
+5. Gestion de Imagenes y Carpeta uploads
 
-Asegurate de que en el archivo backend/server.js la constante del frontend apunte a la carpeta local correctamente:
+Nuevas imagenes: El sistema utiliza Cloudinary mediante multer-storage-cloudinary para subir y optimizar automaticamente las fotografias nuevas en la nube, almacenando la URL publica segura directamente en MySQL.
 
-const frontendPath = path.resolve(__dirname, 'frontend');
-app.use(express.static(frontendPath, { index: 'index.html' }));
-app.use('/uploads', express.static(path.join(frontendPath, 'uploads')));
-
+Imagenes de prueba iniciales: Las fotografias incluidas por defecto en el script seed.sql se sirven de forma estatica desde la carpeta local backend/frontend/uploads. Asegurate de mantener esta carpeta intacta si cargas los datos iniciales de prueba.
 
 6. Iniciar el Servidor
 
@@ -91,8 +91,8 @@ Ya tienes el sistema Encontrando Huellitas completamente funcional en tu equipo.
 
 Resumen de Modificaciones Necesarias para Entorno Local
 
-backend/.env: Cambiar DB_HOST a localhost, ajustar DB_PASSWORD local y establecer DB_SSL=false.
+backend/.env: Configurar DB_HOST en localhost, ajustar DB_PASSWORD local, establecer DB_SSL=false y agregar tu variable CLOUDINARY_URL.
 
 Base de Datos: Asegurar que el cotejamiento sea utf8mb4 para soportar tildes y caracteres en espanol.
 
-Carpeta uploads: Asegurarse de que exista la carpeta backend/frontend/uploads para almacenar las imagenes subidas por los usuarios.
+Almacenamiento de Imagenes: Verificar la instalacion de las dependencias cloudinary y multer-storage-cloudinary para la subida en la nube, y conservar backend/frontend/uploads para las imagenes base del proyecto.

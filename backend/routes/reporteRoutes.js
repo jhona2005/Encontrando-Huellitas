@@ -1,16 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const reporteController = require('../controllers/reporteController');
+require('dotenv').config();
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../../frontend/uploads'));
-    },
-    filename: (req, file, cb) => {
-        const nombreUnico = Date.now() + '-' + Math.round(Math.random() * 1E9) + path.extname(file.originalname);
-        cb(null, nombreUnico);
+// Configuración de Cloudinary (lee automáticamente CLOUDINARY_URL del entorno o usa los valores explícitos)
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME || 'lxlxfvhu',
+    api_key: process.env.CLOUDINARY_API_KEY || '822765192282211',
+    api_secret: process.env.CLOUDINARY_API_SECRET || 'zXUmx7BqxYelOMVCOTZhGF5RUbY'
+});
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'encontrando-huellitas',
+        allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
+        transformation: [{ width: 800, crop: 'limit' }]
     }
 });
 
