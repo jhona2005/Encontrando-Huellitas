@@ -1,6 +1,6 @@
-Encontrando Huellitas - Guia de Instalacion Local
+Encontrando Huellitas - Guia de Instalacion y Arquitectura
 
-Este repositorio contiene la aplicacion Encontrando Huellitas, un sistema web desarrollado con Node.js, Express y MySQL para el reporte, busqueda y coincidencia de mascotas perdidas y encontradas.
+Este repositorio contiene la aplicacion Encontrando Huellitas, un sistema web desarrollado con Node.js, Express y MySQL para el reporte, busqueda, coincidencia automatica y contacto sobre mascotas perdidas y halladas.
 
 Sigue esta guia paso a paso para clonar, configurar y ejecutar el proyecto en tu entorno local.
 
@@ -43,9 +43,11 @@ CREATE DATABASE huellitas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE huellitas;
 
 
-Ejecuta el archivo del esquema de la base de datos ubicado en la carpeta database/schema.sql para crear las tablas, procedimientos y activadores.
+Ejecuta el archivo del esquema de la base de datos ubicado en la carpeta database/schema.sql para crear las tablas, restricciones, procedimientos almacenados y activadores (triggers).
 
 (Opcional) Carga los datos de prueba iniciales ejecutando el archivo database/seed.sql.
+
+(Opcional) Puedes consultar metricas y auditorias del sistema utilizando el archivo database/consultas_auditoria.sql.
 
 4. Configurar las Variables de Entorno (.env)
 
@@ -87,7 +89,23 @@ Abre tu navegador web e ingresa a la siguiente direccion:
 
 http://localhost:3000
 
-Ya tienes el sistema Encontrando Huellitas completamente funcional en tu equipo.
+Arquitectura Funcional del Sistema
+
+Ciclo de Vida y Estados de los Reportes
+
+El sistema gestiona cinco estados diferenciados en la tabla reporte_mascota para garantizar la integridad del motor de coincidencias:
+
+PERDIDO: Mascota extraviada publicada por su dueno (activa en busqueda y coincidencias).
+
+HALLADO: Mascota encontrada en la via publica reportada por un ciudadano o entidad (activa en busqueda y coincidencias).
+
+ENCONTRADO / RESUELTO: Caso cerrado exitosamente tras reunir a la mascota con su familia (sale de coincidencias activas).
+
+CERRADO: Reporte dado de baja de forma logica por un usuario con rol ADMIN.
+
+Motor de Coincidencias Automaticas
+
+Al crear o editar un reporte activo (PERDIDO o HALLADO), el sistema cruza automaticamente la publicacion contra los reportes activos del tipo opuesto pertenecientes a otros usuarios, exigiendo coincidencia de especie y al menos una caracteristica fisica (raza o color) con un umbral minimo de similitud del 60%.
 
 Resumen de Modificaciones Necesarias para Entorno Local
 
