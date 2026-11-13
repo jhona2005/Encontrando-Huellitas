@@ -95,8 +95,9 @@ exports.obtenerReportePorId = async (req, res) => {
 // Crear nuevo reporte de perdida
 exports.crearReportePerdida = async (req, res) => {
     try {
-        const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_perdida, recompensa, id_usuario } = req.body;
+        const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_perdida, fecha_evento, recompensa, id_usuario } = req.body;
         const url_imagen = req.file ? req.file.path : '/uploads/default.jpg';
+        const fechaFinal = fecha_perdida || fecha_evento || new Date();
 
         const [resMascota] = await db.execute(`
             INSERT INTO reporte_mascota (especie, raza, color_principal, color_secundario, tamano, descripcion, zona, estado, id_usuario)
@@ -105,7 +106,7 @@ exports.crearReportePerdida = async (req, res) => {
 
         const id_reporte = resMascota.insertId;
 
-        await db.execute(`INSERT INTO reporte_perdida (id_reporte, fecha_perdida, recompensa) VALUES (?, ?, ?)`, [id_reporte, fecha_perdida || new Date(), recompensa || 0.00]);
+        await db.execute(`INSERT INTO reporte_perdida (id_reporte, fecha_perdida, recompensa) VALUES (?, ?, ?)`, [id_reporte, fechaFinal, recompensa || 0.00]);
         await db.execute(`INSERT INTO fotografia (url_imagen, id_reporte) VALUES (?, ?)`, [url_imagen, id_reporte]);
 
         await Coincidencia.generarCoincidenciasAutomaticas(id_reporte, 'PERDIDA');
@@ -120,8 +121,9 @@ exports.crearReportePerdida = async (req, res) => {
 // Crear nuevo reporte de hallazgo
 exports.crearReporteHallazgo = async (req, res) => {
     try {
-        const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_hallazgo, id_usuario } = req.body;
+        const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_hallazgo, fecha_evento, id_usuario } = req.body;
         const url_imagen = req.file ? req.file.path : '/uploads/default.jpg';
+        const fechaFinal = fecha_hallazgo || fecha_evento || new Date();
 
         const [resMascota] = await db.execute(`
             INSERT INTO reporte_mascota (especie, raza, color_principal, color_secundario, tamano, descripcion, zona, estado, id_usuario)
@@ -130,7 +132,7 @@ exports.crearReporteHallazgo = async (req, res) => {
 
         const id_reporte = resMascota.insertId;
 
-        await db.execute(`INSERT INTO reporte_hallazgo (id_reporte, fecha_hallazgo) VALUES (?, ?)`, [id_reporte, fecha_hallazgo || new Date()]);
+        await db.execute(`INSERT INTO reporte_hallazgo (id_reporte, fecha_hallazgo) VALUES (?, ?)`, [id_reporte, fechaFinal]);
         await db.execute(`INSERT INTO fotografia (url_imagen, id_reporte) VALUES (?, ?)`, [url_imagen, id_reporte]);
 
         await Coincidencia.generarCoincidenciasAutomaticas(id_reporte, 'HALLAZGO');
@@ -167,7 +169,7 @@ exports.marcarResuelto = async (req, res) => {
             );
         }
 
-        await db.execute(`UPDATE reporte_mascota SET estado = 'ENCONTRADO' WHERE id_reporte = ?`, [id]);
+        await db.execute(`UPDATE reporte_mascota SET estado = 'RESUELTO' WHERE id_reporte = ?`, [id]);
 
         return res.json({ status: 'success', message: 'Reporte marcado como resuelto correctamente' });
     } catch (error) {
