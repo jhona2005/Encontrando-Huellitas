@@ -31,7 +31,8 @@ async function cargarMisReportes(idUsuario) {
             card.className = 'card-mascota';
 
             const esEliminadoAdmin = (r.estado === 'CERRADO');
-            const esEncontrado = (r.estado === 'ENCONTRADO' || r.estado === 'RESUELTO');
+            const esResuelto = (r.estado === 'ENCONTRADO' || r.estado === 'RESUELTO');
+            const esHallado = (r.estado === 'HALLADO');
 
             let colorEstado = '#dc3545';
             let textoEstado = 'PERDIDO';
@@ -39,12 +40,15 @@ async function cargarMisReportes(idUsuario) {
             if (esEliminadoAdmin) {
                 colorEstado = '#6c757d';
                 textoEstado = 'ELIMINADO';
-            } else if (esEncontrado) {
+            } else if (esHallado) {
+                colorEstado = '#fd7e14';
+                textoEstado = 'HALLADO';
+            } else if (esResuelto) {
                 colorEstado = '#28a745';
                 textoEstado = 'ENCONTRADO';
             }
 
-            const paginaEdicion = (r.estado === 'ENCONTRADO') ? 'reporte-hallazgo.html' : 'reporte-perdida.html';
+            const paginaEdicion = esHallado ? 'reporte-hallazgo.html' : 'reporte-perdida.html';
 
             card.innerHTML = `
                 <div style="position: relative;">
@@ -61,7 +65,7 @@ async function cargarMisReportes(idUsuario) {
                     <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.8rem;">
                         ${esEliminadoAdmin ? `
                             <p style="color: #dc3545; font-weight: bold; margin: 0; text-align: center; padding: 0.5rem 0;">Eliminado por Administrador</p>
-                        ` : (esEncontrado ? `
+                        ` : (esResuelto ? `
                             <p style="color: #28a745; font-weight: bold; margin: 0; text-align: center; padding: 0.5rem 0;">✓ Caso Resuelto</p>
                         ` : `
                             <button class="btn-buscar" 

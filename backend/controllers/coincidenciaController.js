@@ -38,7 +38,7 @@ exports.obtenerCoincidencias = async (req, res) => {
             INNER JOIN usuario u_h ON rm_h.id_usuario = u_h.id_usuario
             WHERE (rm_p.id_usuario = ? OR rm_h.id_usuario = ?)
               AND rm_p.estado = 'PERDIDO'
-              AND rm_h.estado = 'ENCONTRADO'
+              AND rm_h.estado = 'HALLADO'
             ORDER BY c.porcentaje_similitud DESC`;
 
         const [filas] = await db.execute(sql, [idUsuario, idUsuario]);

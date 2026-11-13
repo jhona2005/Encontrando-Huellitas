@@ -118,7 +118,7 @@ exports.crearReportePerdida = async (req, res) => {
     }
 };
 
-// Crear nuevo reporte de hallazgo
+// Crear nuevo reporte de hallazgo (Estado inicial: HALLADO)
 exports.crearReporteHallazgo = async (req, res) => {
     try {
         const { especie, raza, color_principal, color_secundario, tamano, descripcion, zona, fecha_hallazgo, fecha_evento, id_usuario } = req.body;
@@ -127,7 +127,7 @@ exports.crearReporteHallazgo = async (req, res) => {
 
         const [resMascota] = await db.execute(`
             INSERT INTO reporte_mascota (especie, raza, color_principal, color_secundario, tamano, descripcion, zona, estado, id_usuario)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'ENCONTRADO', ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 'HALLADO', ?)
         `, [especie, raza, color_principal, color_secundario || 'NO_APLICA', tamano, descripcion, zona, id_usuario]);
 
         const id_reporte = resMascota.insertId;
@@ -144,7 +144,7 @@ exports.crearReporteHallazgo = async (req, res) => {
     }
 };
 
-// Marcar un reporte como resuelto por el usuario
+// Marcar un reporte como resuelto / encontrado por el usuario
 exports.marcarResuelto = async (req, res) => {
     try {
         const { id } = req.params;
@@ -206,7 +206,7 @@ exports.actualizarReporte = async (req, res) => {
 
         const [rows] = await db.execute(`SELECT estado FROM reporte_mascota WHERE id_reporte = ?`, [id_reporte]);
         const estadoActual = rows.length > 0 ? rows[0].estado : 'PERDIDO';
-        const tipoReporte = (estadoActual === 'ENCONTRADO') ? 'HALLAZGO' : 'PERDIDA';
+        const tipoReporte = (estadoActual === 'HALLADO') ? 'HALLAZGO' : 'PERDIDA';
 
         await Coincidencia.generarCoincidenciasAutomaticas(id_reporte, tipoReporte);
 

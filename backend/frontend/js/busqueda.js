@@ -97,9 +97,16 @@ async function cargarReportes(queryString = '') {
                 textoColor += ` / ${r.color_secundario}`;
             }
 
-            const esEncontrado = r.estado === 'ENCONTRADO' || r.estado === 'RESUELTO';
-            const colorEstado = esEncontrado ? '#28a745' : '#dc3545';
-            const textoEstado = esEncontrado ? 'ENCONTRADO' : 'PERDIDO';
+            let colorEstado = '#dc3545';
+            let textoEstado = 'PERDIDO';
+
+            if (r.estado === 'HALLADO') {
+                colorEstado = '#fd7e14';
+                textoEstado = 'HALLADO';
+            } else if (r.estado === 'ENCONTRADO' || r.estado === 'RESUELTO') {
+                colorEstado = '#28a745';
+                textoEstado = 'ENCONTRADO';
+            }
 
             card.innerHTML = `
                 <div style="position: relative;">
@@ -176,17 +183,20 @@ async function iniciarContacto(idReporteDestino, idUsuarioReceptor) {
         return;
     }
 
-    // USUARIO NORMAL: Cargar reportes propios para el Modal
+    // USUARIO NORMAL: Cargar reportes activos propios (PERDIDO o HALLADO) para el Modal
     try {
         const res = await fetch('/api/reportes');
         const todos = await res.json();
         const resDestino = await fetch(`/api/reportes/${idReporteDestino}`);
         reporteDestinoGlobal = await resDestino.json();
 
-        const misReportes = todos.filter(r => parseInt(r.id_usuario) === parseInt(usuarioSesion.id_usuario) && r.estado !== 'ENCONTRADO');
+        const misReportes = todos.filter(r => 
+            parseInt(r.id_usuario) === parseInt(usuarioSesion.id_usuario) && 
+            ['PERDIDO', 'HALLADO'].includes(r.estado)
+        );
 
         if (misReportes.length === 0) {
-            alert('Debes tener al menos una publicación activa de mascota para generar una coincidencia y contactar.');
+            alert('Debes tener al menos una publicación activa (Perdida o Hallada) para generar una coincidencia y contactar.');
             return;
         }
 
@@ -201,7 +211,7 @@ async function iniciarContacto(idReporteDestino, idUsuarioReceptor) {
             btnItem.style.borderRadius = '8px';
             btnItem.style.cursor = 'pointer';
             btnItem.style.background = '#f9f9f9';
-            btnItem.innerHTML = `<strong>${miRep.especie} - ${miRep.raza}</strong> (${miRep.zona})`;
+            btnItem.innerHTML = `<strong>[${miRep.estado}] ${miRep.especie} - ${miRep.raza}</strong> (${miRep.zona})`;
 
             btnItem.onclick = () => procesarCoincidenciaContacto(miRep, reporteDestinoGlobal, usuarioSesion);
             contenedorLista.appendChild(btnItem);
@@ -240,9 +250,6 @@ async function procesarCoincidenciaContacto(miReporte, reporteDestino, usuarioSe
     if (!textoMensaje || !textoMensaje.trim()) return;
 
     try {
-        const idPerdida = (miReporte.estado === 'PERDIDO') ? miReporte.id_reporte : reporteDestino.id_reporte;
-        const idHallazgo = (miReporte.estado === 'PERDIDO') ? reporteDestino.id_reporte : miReporte.id_reporte;
-
         await fetch('/api/mensajes', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -277,7 +284,6 @@ async function eliminarComoAdmin(idReporte) {
     if (!pass) return;
 
     try {
-        // Validación con endpoint /api/auth/validar-password
         const resVal = await fetch('/api/auth/validar-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -291,7 +297,6 @@ async function eliminarComoAdmin(idReporte) {
             return;
         }
 
-        // Borrado Físico
         const resDel = await fetch(`/api/reportes/${idReporte}`, { method: 'DELETE' });
         if (resDel.ok) {
             alert('El reporte ha sido eliminado permanentemente del sistema.');

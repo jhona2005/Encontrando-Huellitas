@@ -84,19 +84,19 @@ class Coincidencia {
         try {
             const [reporteNuevoArray] = await db.execute(`SELECT * FROM reporte_mascota WHERE id_reporte = ?`, [idReporteNuevo]);
             
-            /* Solo detener si el reporte no existe o ya fue cerrado/resuelto */
-            if (reporteNuevoArray.length === 0 || reporteNuevoArray[0].estado === 'RESUELTO' || reporteNuevoArray[0].estado === 'CERRADO') {
+            /* Solo detener si el reporte no existe o ya fue cerrado/reunido */
+            if (reporteNuevoArray.length === 0 || ['ENCONTRADO', 'RESUELTO', 'CERRADO'].includes(reporteNuevoArray[0].estado)) {
                 return;
             }
             const reporteNuevo = reporteNuevoArray[0];
 
             let sqlExistentes = '';
             
-            /* Cruzar HALLAZGO ('ENCONTRADO') contra 'PERDIDO', y PERDIDA ('PERDIDO') contra 'ENCONTRADO' */
+            /* Cruzar HALLAZGO ('HALLADO') contra 'PERDIDO', y PERDIDA ('PERDIDO') contra 'HALLADO' */
             if (tipoNuevo === 'HALLAZGO') {
                 sqlExistentes = `SELECT * FROM reporte_mascota WHERE estado = 'PERDIDO' AND id_reporte != ? AND id_usuario != ?`;
             } else {
-                sqlExistentes = `SELECT * FROM reporte_mascota WHERE estado = 'ENCONTRADO' AND id_reporte != ? AND id_usuario != ?`;
+                sqlExistentes = `SELECT * FROM reporte_mascota WHERE estado = 'HALLADO' AND id_reporte != ? AND id_usuario != ?`;
             }
 
             const [reportesExistentes] = await db.execute(sqlExistentes, [idReporteNuevo, reporteNuevo.id_usuario]);
