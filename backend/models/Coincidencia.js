@@ -10,7 +10,7 @@ class Coincidencia {
         this.id_reporte_hallazgo = id_reporte_hallazgo;
     }
 
-    /* Algoritmo de calculo de similitud con umbral flexible del 50% */
+    /* Algoritmo de calculo de similitud con validacion fisica obligatoria */
     static calcularSimilitud(reporteA, reporteB) {
         let puntosTotal = 100;
         let puntosCoincidentes = 0;
@@ -22,22 +22,48 @@ class Coincidencia {
             return 0;
         }
 
-        /* 1. Raza (35 pts) - Coincidencia exacta o parcial */
+        /* 1. Raza (35 pts) - Solo coincidencia real */
         const razaA = norm(reporteA.raza);
         const razaB = norm(reporteB.raza);
+        let coincideRaza = false;
+
         if (razaA === razaB) {
             puntosCoincidentes += 35;
-        } else if (razaA.includes(razaB) || razaB.includes(razaA) || razaA.includes('criollo') || razaB.includes('criollo')) {
-            puntosCoincidentes += 25;
+            coincideRaza = true;
+        } else if (razaA.includes(razaB) || razaB.includes(razaA)) {
+            puntosCoincidentes += 20;
+            coincideRaza = true;
         }
 
-        /* 2. Color Principal (30 pts) */
-        const colorA = norm(reporteA.color_principal);
-        const colorB = norm(reporteB.color_principal);
-        if (colorA === colorB) {
-            puntosCoincidentes += 30;
-        } else if (colorA.includes(colorB.split('/')[0].trim()) || colorB.includes(colorA.split('/')[0].trim())) {
-            puntosCoincidentes += 20;
+        /* 2. Color Principal y Secundario (35 pts en total) */
+        const colorP_A = norm(reporteA.color_principal);
+        const colorP_B = norm(reporteB.color_principal);
+        const colorS_A = norm(reporteA.color_secundario);
+        const colorS_B = norm(reporteB.color_secundario);
+        let coincideColor = false;
+
+        if (colorP_A === colorP_B) {
+            puntosCoincidentes += 25;
+            coincideColor = true;
+        } else if (
+            colorP_A.includes(colorP_B.split('/')[0].trim()) ||
+            colorP_B.includes(colorP_A.split('/')[0].trim()) ||
+            (colorS_A !== 'no_aplica' && colorS_A === colorP_B) ||
+            (colorS_B !== 'no_aplica' && colorS_B === colorP_A)
+        ) {
+            puntosCoincidentes += 15;
+            coincideColor = true;
+        }
+
+        /* Coincidencia en color secundario */
+        if (colorS_A !== 'no_aplica' && colorS_B !== 'no_aplica' && colorS_A === colorS_B) {
+            puntosCoincidentes += 10;
+            coincideColor = true;
+        }
+
+        /* Filtro de coherencia visual: debe coincidir al menos en raza o en color */
+        if (!coincideRaza && !coincideColor) {
+            return 0;
         }
 
         /* 3. Zona / Localidad (20 pts) */
@@ -45,9 +71,9 @@ class Coincidencia {
             puntosCoincidentes += 20;
         }
 
-        /* 4. Tamaño (15 pts) */
+        /* 4. Tamaño (10 pts) */
         if (norm(reporteA.tamano) === norm(reporteB.tamano)) {
-            puntosCoincidentes += 15;
+            puntosCoincidentes += 10;
         }
 
         return Number((puntosCoincidentes / puntosTotal).toFixed(2));
@@ -88,7 +114,7 @@ class Coincidencia {
 
                 const similitud = this.calcularSimilitud(reportePerdida, reporteHallazgo);
 
-                if (similitud >= 0.50) {
+                if (similitud >= 0.60) {
                     const sqlInsert = `
                         INSERT INTO coincidencia (porcentaje_similitud, id_reporte_perdida, id_reporte_hallazgo) 
                         VALUES (?, ?, ?)
